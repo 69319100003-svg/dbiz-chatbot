@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D-Biz AI Assistant</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Tahoma,Arial,sans-serif;background:linear-gradient(135deg,#eef5ff,#f7f0ff);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;color:#18233b}
+.app{width:min(1100px,100%);height:min(760px,calc(100vh - 48px));background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 25px 70px #3446a31f;display:flex}
+.sidebar{width:280px;background:linear-gradient(180deg,#172554,#312e81);color:#fff;padding:28px 20px;display:flex;flex-direction:column}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:35px}
+.logo{width:52px;height:52px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:28px}
+.brand h1{font-size:18px}.brand p{font-size:11px;opacity:.75;margin-top:4px}
+.side-title{font-size:12px;opacity:.65;margin:10px 8px}
+.menu button{width:100%;border:0;background:transparent;color:#fff;text-align:left;padding:12px;border-radius:12px;margin:3px 0;cursor:pointer;font-size:14px}
+.menu button:hover{background:#ffffff16}
+.info{margin-top:auto;background:#ffffff12;border:1px solid #ffffff18;border-radius:16px;padding:14px;font-size:12px;line-height:1.7}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.header{padding:20px 25px;border-bottom:1px solid #edf0f7;display:flex;align-items:center;justify-content:space-between}
+.status{display:flex;align-items:center;gap:10px}.status-dot{width:10px;height:10px;background:#22c55e;border-radius:50%;box-shadow:0 0 0 5px #22c55e1c}
+.header h2{font-size:19px}.header p{font-size:12px;color:#8490a7;margin-top:3px}
+.chat{flex:1;overflow:auto;padding:28px;background:#f8faff}
+.msg{display:flex;margin-bottom:18px}.msg.user{justify-content:flex-end}
+.bubble{max-width:min(75%,620px);padding:14px 17px;border-radius:18px;line-height:1.65;font-size:14px}
+.bot .bubble{background:#fff;border-bottom-left-radius:5px;box-shadow:0 4px 18px #18233b0b}
+.user .bubble{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border-bottom-right-radius:5px}
+.quick{padding:14px 22px;background:#fff;border-top:1px solid #edf0f7}
+.quick-label{font-size:11px;color:#8a94a8;margin-bottom:8px}
+.quick-list{display:flex;gap:8px;flex-wrap:wrap}
+.quick button{border:1px solid #dce3f4;background:#f8faff;color:#3154a4;padding:8px 12px;border-radius:18px;cursor:pointer;font-size:12px}
+.quick button:hover{background:#edf2ff}
+.input{display:flex;gap:10px;padding:15px 20px;background:#fff}
+.input input{flex:1;border:1px solid #dbe2ef;border-radius:25px;padding:13px 17px;outline:0;font-size:14px}
+.input input:focus{border-color:#6d5dfc}
+.send{width:48px;height:48px;border:0;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:20px;cursor:pointer}
+.footer{text-align:center;color:#9aa3b5;font-size:10px;padding:0 0 10px}
+@media(max-width:760px){
+ body{padding:0}.app{height:100vh;border-radius:0}.sidebar{display:none}
+ .bubble{max-width:88%}.header{padding:17px}.chat{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">🤖</div>
+      <div><h1>D-Biz AI</h1><p>Digital Business Technology</p></div>
+    </div>
+    <div class="side-title">เมนูหลัก</div>
+    <div class="menu">
+      <button onclick="ask('ข้อมูลแผนก')">🏫 ข้อมูลแผนก</button>
+      <button onclick="ask('หลักสูตร')">📚 หลักสูตรและรายวิชา</button>
+      <button onclick="ask('ครูผู้สอน')">👨‍🏫 ครูผู้สอน</button>
+      <button onclick="ask('สมัครเรียน')">📝 การสมัครเรียน</button>
+      <button onclick="ask('ข่าวสาร')">📢 ข่าวสารและประกาศ</button>
+      <button onclick="ask('ติดต่อแผนก')">📞 ติดต่อแผนก</button>
+    </div>
+    <div class="info">
+      <b>💡 D-Biz AI Assistant</b><br>
+      ผู้ช่วยตอบคำถามเกี่ยวกับแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div class="status">
+        <span class="status-dot"></span>
+        <div><h2>D-Biz AI Assistant</h2><p>ผู้ช่วยแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล</p></div>
+      </div>
+      <div>✨</div>
+    </header>
+
+    <section class="chat" id="chat">
+      <div class="msg bot"><div class="bubble">
+        👋 สวัสดีครับ!<br>
+        ผมคือ <b>D-Biz AI Assistant</b> 🤖<br>
+        ผู้ช่วยของแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล
+        <br><br>สามารถสอบถามข้อมูลเกี่ยวกับแผนก หลักสูตร การสมัครเรียน ครูผู้สอน และข้อมูลทั่วไปได้เลยครับ
+      </div></div>
+    </section>
+
+    <section class="quick">
+      <div class="quick-label">คำถามยอดนิยม</div>
+      <div class="quick-list">
+        <button onclick="ask('ข้อมูลแผนก')">🏫 ข้อมูลแผนก</button>
+        <button onclick="ask('หลักสูตร')">📚 หลักสูตร</button>
+        <button onclick="ask('ครูผู้สอน')">👨‍🏫 ครูผู้สอน</button>
+        <button onclick="ask('สมัครเรียน')">📝 สมัครเรียน</button>
+        <button onclick="ask('ติดต่อแผนก')">📞 ติดต่อ</button>
+      </div>
+    </section>
+
+    <div class="input">
+      <input id="input" placeholder="พิมพ์คำถามของคุณ..." onkeydown="if(event.key==='Enter')send()">
+      <button class="send" onclick="send()">➤</button>
+    </div>
+    <div class="footer">D-Biz AI Assistant • Digital Business Technology</div>
+  </main>
+</div>
+
+<script>
+const chat=document.getElementById('chat');
+const input=document.getElementById('input');
+
+function add(text,type){
+  const row=document.createElement('div');
+  row.className='msg '+type;
+  const bubble=document.createElement('div');
+  bubble.className='bubble';
+  bubble.innerHTML=text;
+  row.appendChild(bubble); chat.appendChild(row);
+  chat.scrollTop=chat.scrollHeight;
+}
+function ask(text){input.value=text;send()}
+function send(){
+  const text=input.value.trim(); if(!text)return;
+  add(text,'user'); input.value='';
+  setTimeout(()=>add(reply(text),'bot'),450);
+}
+function reply(t){
+  const x=t.toLowerCase();
+  if(x.includes('แผนก')) return '🏫 <b>แผนกวิชาเทคโนโลยีธุรกิจดิจิทัล</b><br><br>มุ่งเน้นการประยุกต์ใช้เทคโนโลยีดิจิทัลเพื่อธุรกิจ เช่น การตลาดดิจิทัล เว็บไซต์ สื่อดิจิทัล E-Commerce ข้อมูล และ AI';
+  if(x.includes('หลักสูตร')||x.includes('วิชา')) return '📚 <b>หลักสูตรและรายวิชา</b><br><br>สามารถเพิ่มข้อมูลหลักสูตร รายวิชา โครงสร้างหลักสูตร และรายละเอียดการเรียนของแต่ละระดับชั้นลงในระบบนี้ได้';
+  if(x.includes('ครู')||x.includes('ผู้สอน')) return '👨‍🏫 <b>ครูผู้สอน</b><br><br>สามารถเพิ่มรายชื่อครู ตำแหน่ง วิชาที่รับผิดชอบ และช่องทางติดต่อได้ครับ';
+  if(x.includes('สมัคร')) return '📝 <b>การสมัครเรียน</b><br><br>สามารถเพิ่มประกาศรับสมัคร คุณสมบัติ เอกสาร กำหนดการ และขั้นตอนการสมัครเรียนได้ครับ';
+  if(x.includes('ข่าว')) return '📢 <b>ข่าวสารและประกาศ</b><br><br>สามารถเชื่อมต่อข้อมูลข่าวสาร กิจกรรม และประกาศล่าสุดของแผนกได้ครับ';
+  if(x.includes('ติดต่อ')) return '📞 <b>ติดต่อแผนก</b><br><br>กรุณาเพิ่มชื่อวิทยาลัย ที่อยู่ เบอร์โทรศัพท์ อีเมล เว็บไซต์ และช่องทาง Social Media ของแผนกในส่วนข้อมูลระบบ';
+  if(x.includes('ai')||x.includes('เอไอ')) return '🤖 AI สามารถช่วยงานด้านธุรกิจดิจิทัลได้ เช่น สร้างเนื้อหา วิเคราะห์ข้อมูล ทำการตลาด สร้างภาพ และสร้าง Chatbot';
+  return '🤔 ขออภัยครับ ผมยังไม่มีข้อมูลเรื่องนี้ ลองถามเกี่ยวกับ “ข้อมูลแผนก”, “หลักสูตร”, “ครูผู้สอน”, “สมัครเรียน” หรือ “ติดต่อแผนก” ได้ครับ';
+}
+</script>
+</body>
+</html>
